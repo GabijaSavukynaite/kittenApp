@@ -1,12 +1,22 @@
 import React from "react";
 import { Action } from "redux";
-import { FlatList, StyleSheet, Text, View, ListRenderItem, ActivityIndicator, Dimensions, ScaledSize } from 'react-native';
+import {
+    FlatList,
+    StyleSheet,
+    Text,
+    View,
+    ListRenderItem,
+    ActivityIndicator,
+    Dimensions,
+    ScaledSize,
+} from 'react-native';
 import { ItemCard } from '../components/ItemCard'
 import { KittenInfo } from '../types';
 import { getKittenImages as getKittenImagesAction } from '../store/actions/kittens';
 import { RootState } from '../store/reducers';
 import { ThunkDispatch } from "redux-thunk";
-import { connect, ConnectedProps } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux';
+import { ChangeNumberOfListItemsModal } from '../components/ChangeNumberOfListItemsModal'
 
 const IMAGE_WIDTH_SCALE = 0.85;
 const IMAGE_HEIGHT_SCALE = 0.3;
@@ -90,6 +100,10 @@ class HomeScreen extends React.PureComponent<HomeScreenProps, HomeScreenState> {
             imageHeight={Math.floor(this.state.window.height * IMAGE_HEIGHT_SCALE)}
         />
     }
+
+    onSetNumberOfItems = (numberOfItems: number) => {
+        this.setState({numberOfItems: numberOfItems});
+    }
     
     render() {
         return this.props.error ? 
@@ -101,6 +115,11 @@ class HomeScreen extends React.PureComponent<HomeScreenProps, HomeScreenState> {
                     <ActivityIndicator color="#0000ff" /> 
                 </View>
                 : <View style={styles.mainView}>
+                    <ChangeNumberOfListItemsModal
+                        width={this.state.window.width}
+                        setNumberOfItems={this.onSetNumberOfItems}
+                        numberOfItems={this.state.numberOfItems}
+                    />
                     <FlatList
                         data={this.generateKittenInfo(this.props.kittenImages, this.state.kittenNames,
                             this.state.numberOfItems)}
@@ -116,8 +135,16 @@ const styles = StyleSheet.create({
     mainView: {
         flex: 1,
         alignItems: 'center',
+        padding: 15,
+        paddingBottom: 0
+
     },
     loadingErrorView: {
+        justifyContent: 'center'
+    },
+    modal: {
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center'
     }
 });

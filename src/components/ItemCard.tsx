@@ -27,13 +27,21 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 5,
+        borderRadius: 5
     },
     name: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#260801',
-        marginTop: 10
+        marginTop: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
     }
   });
     
