@@ -1,23 +1,28 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from 'react-native';
-import { KittenInfo } from '../types';
+import { Text, View, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { KittenInfo, ImageSize } from '../types';
 
-interface ImageSize {
-    imageWidth:  number,
-    imageHeight: number
+interface NavigationProps {
+    onPress: () => void
 }
     
-export const ItemCard: React.FC<KittenInfo & ImageSize> = ({
+export const ItemCard: React.FC<KittenInfo & ImageSize & NavigationProps> = ({
     name,
     image,
     id,
     imageWidth,
-    imageHeight
+    imageHeight,
+    onPress
 }) => {
-    return <View style={styles.main}>
-        <Image style={{width: imageWidth, height: imageHeight}} source={{ uri: image }}/>
-        <Text style={styles.name}>{name}</Text>
-    </View>
+    return <TouchableHighlight
+                activeOpacity={0.6}
+                underlayColor="#DDDDDD"
+                onPress={onPress}>
+                <View style={styles.main}>
+                    <Image style={{width: imageWidth, height: imageHeight}} source={{ uri: image }}/>
+                    <Text style={styles.name}>{name}</Text>
+                </View>
+        </TouchableHighlight>
 }
 
 const styles = StyleSheet.create({
@@ -27,13 +32,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 5
-    },
-    name: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#260801',
-        marginTop: 10,
+        borderRadius: 5,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -42,6 +41,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#260801',
+        marginTop: 10,
     }
   });
     

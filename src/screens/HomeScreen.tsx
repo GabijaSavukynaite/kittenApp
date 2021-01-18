@@ -17,6 +17,12 @@ import { RootState } from '../store/reducers';
 import { ThunkDispatch } from "redux-thunk";
 import { connect, ConnectedProps } from 'react-redux';
 import { ChangeNumberOfListItemsModal } from '../components/ChangeNumberOfListItemsModal'
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../Routes';
+
+type NavigationProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>
+};
 
 const IMAGE_WIDTH_SCALE = 0.85;
 const IMAGE_HEIGHT_SCALE = 0.3;
@@ -41,7 +47,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, Action>) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type HomeScreenProps = ConnectedProps<typeof connector>
+type HomeScreenProps = ConnectedProps<typeof connector> & NavigationProps;
 
 class HomeScreen extends React.PureComponent<HomeScreenProps, HomeScreenState> {
     state: HomeScreenState = {
@@ -92,12 +98,19 @@ class HomeScreen extends React.PureComponent<HomeScreenProps, HomeScreenState> {
     }
 
     renderItem: ListRenderItem<KittenInfo> = ({ item }) => {
+        const width = Math.floor(this.state.window.width * IMAGE_WIDTH_SCALE);
+        const height = Math.floor(this.state.window.height * IMAGE_HEIGHT_SCALE);
         return <ItemCard
             id={item.id}
             name={item.name}
             image={item.image}
-            imageWidth={Math.floor(this.state.window.width * IMAGE_WIDTH_SCALE)}
-            imageHeight={Math.floor(this.state.window.height * IMAGE_HEIGHT_SCALE)}
+            imageWidth={width}
+            imageHeight={height}
+            onPress={() => this.props.navigation.navigate('KittenDescription', {
+                ...item,
+                imageWidth: width,
+                imageHeight: height
+            })}
         />
     }
 

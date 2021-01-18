@@ -3,3 +3,8 @@ export interface KittenInfo {
     name: string,
     image: string
 }
+
+export interface ImageSize {
+    imageWidth:  number,
+    imageHeight: number
+}
